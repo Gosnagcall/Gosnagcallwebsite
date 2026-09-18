@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoSnagcall — Never Miss Another Job</title>
+<meta name="description" content="GoSnagcall instantly texts back every missed call, qualifies new leads around the clock, and reminds customers about their appointments — built for HVAC, plumbing, roofing and other home service businesses.">
+<script>
+  // Pricing gate: runs before paint to avoid a flash of unlocked content.
+  // Unlock conditions: ?open=1 in the URL (use this on links you personally send out),
+  // or a previous successful email unlock stored in this browser.
+  (function () {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var bypass = params.get('open') === '1';
+      var unlocked = bypass || localStorage.getItem('gsc_unlocked') === '1';
+      if (bypass) { try { localStorage.setItem('gsc_unlocked', '1'); } catch (e) {} }
+      if (!unlocked) { document.documentElement.classList.add('locked'); }
+    } catch (e) {
+      document.documentElement.classList.add('locked');
+    }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0f2438;
+    --navy-2:#16324a;
+    --teal:#0f6e5f;
+    --teal-light:#6fd6bd;
+    --bg:#ffffff;
+    --bg-soft:#f4f8f7;
+    --border:#e1e9e6;
+    --text:#1a2332;
+    --text-soft:#5b6b76;
+    --text-faint:#8a959c;
+    --radius:10px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:88px 0;}
+  h1,h2,h3{margin:0;color:var(--navy);letter-spacing:-0.02em;}
+  h2{font-size:32px;font-weight:800;}
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--teal);
+    background:var(--bg-soft);
+    padding:6px 14px;
+    border-radius:20px;
+    margin-bottom:18px;
+  }
+  .section-head{max-width:640px;margin:0 auto 48px auto;text-align:center;}
+  .section-sub{font-size:16px;color:var(--text-soft);margin-top:10px;}
+  .btn{
+    display:inline-block;
+    font-weight:700;
+    font-size:15px;
+    padding:14px 26px;
+    border-radius:8px;
+    text-decoration:none;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--teal);color:#fff;}
+  .btn-primary:hover{opacity:0.92;}
+  .btn-ghost{background:transparent;color:var(--navy);border-color:var(--border);}
+  .btn-ghost:hover{border-color:var(--navy);}
+  .btn-dark{background:var(--navy);color:#fff;}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:saturate(180%) blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:var(--maxw);margin:0 auto;}
+  .logo{font-size:20px;font-weight:800;color:#000000;text-decoration:none;letter-spacing:-0.02em;}
+  .logo span{color:#000000;}
+  .nav-links{display:flex;align-items:center;gap:32px;}
+  .nav-links a{font-size:14px;font-weight:600;color:var(--text-soft);text-decoration:none;}
+  .nav-links a:hover{color:var(--navy);}
+  .nav-cta{display:flex;align-items:center;gap:20px;}
+  .menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .menu-btn span{display:block;width:22px;height:2px;background:var(--navy);margin:5px 0;border-radius:2px;}
+  .mobile-only-cta{display:none;}
+
+  /* Hero */
+  .hero{padding:64px 0 80px 0;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  .hero h1{font-size:46px;font-weight:800;line-height:1.08;margin-bottom:20px;}
+  .hero p.lead{font-size:17px;color:var(--text-soft);max-width:480px;margin-bottom:32px;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-note{margin-top:16px;font-size:12.5px;color:var(--text-faint);}
+
+  /* Phone mockup */
+  .phone{
+    background:var(--navy);
+    border-radius:34px;
+    padding:14px;
+    width:290px;
+    margin:0 auto;
+    box-shadow:0 30px 60px -20px rgba(15,36,56,0.35);
+  }
+  .phone-screen{
+    background:#f4f6f7;
+    border-radius:22px;
+    padding:18px 14px 22px 14px;
+    min-height:420px;
+  }
+  .phone-bar{
+    text-align:center;font-size:11px;color:var(--text-faint);font-weight:700;
+    margin-bottom:14px;
+  }
+  .bubble{
+    max-width:78%;
+    padding:10px 13px;
+    border-radius:14px;
+    font-size:13px;
+    line-height:1.4;
+    margin-bottom:10px;
+  }
+  .bubble.in{background:#e4e9ea;color:var(--text);border-bottom-left-radius:4px;}
+  .bubble.out{background:var(--teal);color:#fff;margin-left:auto;border-bottom-right-radius:4px;}
+  .bubble.missed{
+    background:#fdeceb;color:#b3392c;border:1px solid #f6cfca;
+    font-weight:700;text-align:center;margin:0 auto 14px auto;max-width:90%;font-size:11.5px;
+  }
+  .bubble .time{display:block;font-size:9.5px;opacity:0.7;margin-top:4px;font-weight:500;}
+
+  /* Stat band */
+  .statband{background:var(--navy);border-radius:14px;padding:34px 20px;}
+  .statband .wrap-in{display:grid;grid-template-columns:repeat(3,1fr);max-width:900px;margin:0 auto;}
+  .stat{text-align:center;padding:0 16px;border-right:1px solid rgba(255,255,255,0.14);}
+  .stat:last-child{border-right:none;}
+  .stat .big{font-size:26px;font-weight:800;color:var(--teal-light);margin-bottom:6px;}
+  .stat .small{font-size:12.5px;color:#c3ccd3;line-height:1.4;}
+
+  /* Services */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .service-card{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:28px 24px;
+  }
+  .service-num{
+    width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-bottom:16px;
+  }
+  .service-card h3{font-size:17px;margin-bottom:8px;}
+  .service-card p{font-size:14px;color:var(--text-soft);margin:0;}
+
+  /* Industries */
+  .industries{text-align:center;}
+  .chip{
+    display:inline-flex;align-items:center;
+    font-size:13px;font-weight:600;padding:8px 18px;border-radius:20px;margin:4px;
+  }
+  .chip-icon{width:14px;height:14px;margin-right:6px;flex-shrink:0;}
+  .chip-blue{background:#e6f0fd;color:#1d5dad;}
+  .chip-orange{background:#fdece1;color:#b8501c;}
+  .chip-amber{background:#fdf3d9;color:#8a6a06;}
+  .chip-red{background:#fbe7e6;color:#c1352f;}
+  .chip-green{background:#e3f5e6;color:#157a34;}
+  .chip-violet{background:#efecfa;color:#5b3fb0;}
+  .chip-teal{background:#e1f5f1;color:#0f7d67;}
+  .chip-cyan{background:#e2f4f8;color:#12708a;}
+  .chip-rose{background:#fbe9ef;color:#ba3d6d;}
+  .chip-indigo{background:#eaecfa;color:#3c46a8;}
+
+  /* How it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:step;}
+  .step{position:relative;padding-left:0;}
+  .step-num{
+    font-size:13px;font-weight:800;color:var(--teal);
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  }
+  .step-num .dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:13px;}
+  .step h3{font-size:16px;margin-bottom:6px;}
+  .step p{font-size:13.5px;color:var(--text-soft);margin:0;}
+
+  /* Video */
+  .video-box{
+    background:var(--navy);
+    border-radius:16px;
+    aspect-ratio:16/9;
+    max-width:760px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .video-box .play{
+    width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;
+    border:2px solid rgba(255,255,255,0.5);
+  }
+  .video-box .play:after{
+    content:"";border-style:solid;border-width:12px 0 12px 20px;
+    border-color:transparent transparent transparent #fff;margin-left:5px;
+  }
+  .video-caption{text-align:center;color:var(--text-faint);font-size:13px;margin-top:14px;}
+
+  /* Pricing */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start;}
+  .tier{
+    border:1px solid var(--border);border-radius:14px;padding:30px 26px;background:#fff;
+  }
+  .tier.popular{border:2px solid var(--teal);background:var(--bg-soft);position:relative;}
+  .badge{
+    display:inline-block;background:var(--teal);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:0.05em;text-transform:uppercase;padding:5px 12px;border-radius:12px;margin-bottom:12px;
+  }
+  .tier-name{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+  .tier-desc{font-size:13px;color:var(--text-soft);margin-bottom:18px;min-height:20px;}
+  .price{font-size:38px;font-weight:800;color:var(--navy);}
+  .price .permo{font-size:14px;font-weight:600;color:var(--text-soft);}
+  .tier hr{border:none;border-top:1px solid var(--border);margin:20px 0;}
+  .tier ul{list-style:none;padding:0;margin:0 0 22px 0;}
+  .tier ul li{
+    font-size:13.5px;color:var(--text);padding-left:22px;position:relative;margin-bottom:10px;line-height:1.4;
+  }
+  .tier ul li:before{
+    content:"\2713";position:absolute;left:0;color:var(--teal);font-weight:700;
+  }
+  .tier .btn{display:block;text-align:center;}
+  .pricing-note{text-align:center;color:var(--text-faint);font-size:12.5px;margin-top:28px;}
+  .guarantee-banner{
+    text-align:center;max-width:640px;margin:0 auto 36px auto;
+    font-size:13.5px;color:var(--text-soft);line-height:1.5;
+  }
+  .guarantee-badge{
+    display:inline-block;background:var(--navy);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:0.03em;padding:4px 11px;border-radius:12px;margin-right:8px;vertical-align:2px;
+  }
+
+  /* FAQ */
+  .faq{max-width:760px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--border);padding:20px 0;}
+  .faq-item h3{font-size:15.5px;font-weight:700;margin-bottom:8px;}
+  .faq-item p{font-size:14px;color:var(--text-soft);margin:0;}
+
+  /* Final CTA */
+  .cta-band{background:var(--navy);border-radius:18px;padding:56px 40px;text-align:center;}
+  .cta-band h2{color:#fff;}
+  .cta-band p{color:#c3ccd3;font-size:15.5px;margin:14px 0 28px 0;}
+
+  /* Footer */
+  footer{border-top:1px solid var(--border);padding:44px 0;}
+  .footer-grid{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px;}
+  .footer-brand .logo{margin-bottom:8px;display:inline-block;}
+  .footer-brand p{font-size:13px;color:var(--text-faint);max-width:280px;margin:0;}
+  .footer-links{display:flex;gap:40px;flex-wrap:wrap;}
+  .footer-col h4{font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-faint);margin:0 0 12px 0;}
+  .footer-col a{display:block;font-size:13.5px;color:var(--text-soft);text-decoration:none;margin-bottom:8px;}
+  .footer-col a:hover{color:var(--navy);}
+  .footer-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--text-faint);}
+
+  section.alt{background:var(--bg-soft);}
+  section.tight{padding:64px 0;}
+
+  /* Pricing gate */
+  #gated-content{position:relative;}
+  html.locked .gated-inner{filter:blur(7px);pointer-events:none;user-select:none;}
+  .gate-overlay{display:none;}
+  html.locked .gate-overlay{
+    display:flex;justify-content:center;
+    position:sticky;top:90px;z-index:30;
+    padding:20px 16px 0 16px;
+  }
+  .gate-card{
+    background:#fff;border:1px solid var(--border);border-radius:16px;
+    box-shadow:0 24px 60px -18px rgba(15,36,56,0.3);
+    padding:34px 32px;max-width:400px;width:100%;text-align:center;
+  }
+  .gate-icon{font-size:26px;margin-bottom:10px;}
+  .gate-card h3{font-size:19px;margin-bottom:8px;}
+  .gate-card p{font-size:13.5px;color:var(--text-soft);margin:0 0 20px 0;}
+  .gate-card form{display:flex;flex-direction:column;gap:10px;}
+  .gate-card input[type=email]{
+    padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;
+    font-family:inherit;
+  }
+  .gate-card input[type=email]:focus{outline:2px solid var(--teal);outline-offset:1px;}
+  .gate-card button{border:none;cursor:pointer;font-family:inherit;}
+  .gate-fine{font-size:11px;color:var(--text-faint);margin-top:14px;}
+  @media (max-width:860px){
+    html.locked .gate-overlay{top:70px;}
+  }
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:34px;}
+    .phone{margin-top:20px;}
+    .services-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .statband .wrap-in{grid-template-columns:1fr;gap:20px;}
+    .stat{border-right:none;border-bottom:1px solid rgba(255,255,255,0.14);padding-bottom:16px;}
+    .stat:last-child{border-bottom:none;padding-bottom:0;}
+    .nav-links{display:none;}
+    .nav-cta{display:none;}
+    .menu-btn{display:block;}
+    .mobile-only-cta{display:inline-block;margin-top:6px;text-align:center;}
+    section{padding:56px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="#top">GoSnag<span>call</span></a>
+    <div class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact" class="btn btn-primary mobile-only-cta">Book Your Free Setup Call</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#contact">Book Your Free Setup Call</a>
+    </div>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">For HVAC, Plumbing, Roofing &amp; Home Service Pros</div>
+        <h1>Never Miss Another Job.</h1>
+        <p class="lead">GoSnagcall instantly texts back every missed call, qualifies new leads around the clock, and reminds customers about their appointments — so you book more work without hiring anyone new.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contact">Book Your Free Setup Call</a>
+          <a class="btn btn-ghost" href="#pricing">See Pricing</a>
+        </div>
+        <div class="hero-note">Limited onboarding spots &middot; First month is billed only once you're live</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-bar">Missed Call &middot; 2:14 PM</div>
+            <div class="bubble missed">📞 Missed call from (555) 013-8842</div>
+            <div class="bubble out">Hi! Sorry we missed your call — this is GoSnagcall Plumbing. What can we help you with today?<span class="time">Sent 8 sec later</span></div>
+            <div class="bubble in">Hey, my water heater is leaking, need someone today if possible</div>
+            <div class="bubble out">Got it — that's urgent, we can help. Is this for a home or business address, and are you free this afternoon?</div>
+            <div class="bubble in">Home, and yes I'm free after 3pm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAT BAND -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="statband">
+        <div class="wrap-in">
+          <div class="stat">
+            <div class="big">24/7</div>
+            <div class="small">Every call answered with a text, day or night</div>
+          </div>
+          <div class="stat">
+            <div class="big">&lt; 60 sec</div>
+            <div class="small">Average time to first response after a missed call</div>
+          </div>
+          <div class="stat">
+            <div class="big">1 job</div>
+            <div class="small">Is often all it takes to cover your monthly plan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">What You Get</div>
+        <h2>Three tools. One system. Zero missed leads.</h2>
+        <p class="section-sub">Every plan is built around the same idea: no lead falls through the cracks while you're out doing the job.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-num">1</div>
+          <h3>Missed-Call Text-Back</h3>
+          <p>Anyone who calls and doesn't reach you gets an instant text reply, so the lead doesn't hang up and call the next company.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">2</div>
+          <h3>AI Lead Qualification</h3>
+          <p>A friendly AI chatbot engages website and SMS leads 24/7, asks the right questions, and books or flags the job for you.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">3</div>
+          <h3>Appointment Reminders</h3>
+          <p>Automatic SMS &amp; email reminders before every appointment, cutting down on no-shows and last-minute cancellations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="alt tight">
+    <div class="wrap industries">
+      <div class="eyebrow">Built For Service Businesses Like Yours</div>
+      <div>
+        <span class="chip chip-orange"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"/></svg>HVAC</span>
+        <span class="chip chip-blue"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Plumbing</span>
+        <span class="chip chip-amber"><svg class="chip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Electrical</span>
+        <span class="chip chip-red"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg>Roofing</span>
+        <span class="chip chip-green"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="4"/><path d="M12 10V6M8 14H4M16 14h4M9 18l-2 3M15 18l2 3M9.5 10.5 7 8M14.5 10.5 17 8"/></svg>Pest Control</span>
+        <span class="chip chip-violet"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l9-7 9 7v11z"/><path d="M3 14h18M3 17.5h18"/></svg>Garage Door Repair</span>
+        <span class="chip chip-teal"><svg class="chip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 2c-2.2 0-4 2-4 5 0 4 1.5 9 2.7 12.3.4 1.1 1.9 1.1 2.3 0L11 15a1 1 0 0 1 2 0l2 4.3c.4 1.1 1.9 1.1 2.3 0C18.5 16 20 11 20 7c0-3-1.8-5-4-5-1.2 0-2 .6-3 .6S9.2 2 8 2z"/></svg>Dental</span>
+        <span class="chip chip-cyan"><svg class="chip-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="16" r="3.2"/><circle cx="5.5" cy="10" r="2.2"/><circle cx="9.5" cy="6" r="2.2"/><circle cx="14.5" cy="6" r="2.2"/><circle cx="18.5" cy="10" r="2.2"/></svg>Veterinary</span>
+        <span class="chip chip-rose"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20"/><path d="M8 5h8M7 8.5h10M8 12h8M7 15.5h10M8 19h8"/></svg>Chiropractic</span>
+        <span class="chip chip-indigo"><svg class="chip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c.8 3.2 2 4.4 5.2 5.2-3.2.8-4.4 2-5.2 5.2-.8-3.2-2-4.4-5.2-5.2C10 7.4 11.2 6.2 12 3z"/><path d="M19 14c.4 1.6 1 2.2 2.6 2.6-1.6.4-2.2 1-2.6 2.6-.4-1.6-1-2.2-2.6-2.6 1.6-.4 2.2-1 2.6-2.6z"/></svg>Med Spa</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">How It Works</div>
+        <h2>Up and running in three steps</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num"><span class="dot">1</span> Step One</div>
+          <h3>A call comes in</h3>
+          <p>Someone calls your business number and you can't pick up — busy on a job, after hours, or mid-conversation with another customer.</p>
+        </div>
+        <div class="step">
+          <div class="step-num"><span class="dot">2</span> Step Two</div>
+          <h3>GoSnagcall responds instantly</h3>
+          <p>Within seconds, they get a text back. If it's a new lead, our AI asks a few quick questions to understand what they need.</p>
+        </div>
+        <div class="step">
+          <div class="step-num"><span class="dot">3</span> Step Three</div>
+          <h3>You get a ready-to-book lead</h3>
+          <p>You follow up with the details already in hand — no cold callback, no guessing what the job even is.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">See It In Action</div>
+        <h2>Watch GoSnagcall Handle a Missed Call</h2>
+      </div>
+      <div class="video-box">
+        <!-- Replace this placeholder with the real embed once the demo video is ready, e.g.:
+             <iframe src="https://www.youtube.com/embed/VIDEO_ID" ... style="position:absolute;inset:0;width:100%;height:100%;border:0;"></iframe> -->
+        <div class="play"></div>
+      </div>
+      <div class="video-caption">60-second demo &mdash; coming soon</div>
+    </div>
+  </section>
+
+  <div id="gated-content">
+    <div class="gate-overlay" id="gateOverlay">
+      <div class="gate-card">
+        <div class="gate-icon">🔒</div>
+        <h3>See Full Pricing</h3>
+        <p>Enter your email to unlock pricing, FAQ, and next steps.</p>
+        <form id="gateForm">
+          <input type="email" name="email" required placeholder="you@company.com" autocomplete="email">
+          <input type="hidden" name="_subject" value="New GoSnagcall pricing unlock">
+          <button type="submit" class="btn btn-primary">Unlock Pricing</button>
+        </form>
+        <div class="gate-fine">We'll only use this to follow up about GoSnagcall. No spam.</div>
+      </div>
+    </div>
+    <div class="gated-inner">
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Simple Pricing</div>
+        <h2>Choose Your Plan</h2>
+        <p class="section-sub">Simple monthly pricing. No long-term contract — cancel anytime.</p>
+      </div>
+      <div class="guarantee-banner">
+        <span class="guarantee-badge">14-Day Guarantee</span>
+        Your first month is only billed once your line actually goes live — and if GoSnagcall isn't a fit, you get a full refund within 14 days of your go-live date.
+      </div>
+      <div class="pricing-grid">
+        <div class="tier">
+          <div class="tier-name">Starter</div>
+          <div class="tier-desc">Stop losing leads to voicemail</div>
+          <div class="price">$297<span class="permo">/mo</span></div>
+          <hr>
+          <ul>
+            <li>Missed-Call Text-Back (up to 75 missed calls/mo)</li>
+            <li>24/7 automatic coverage</li>
+            <li>Custom text message templates</li>
+            <li>Setup &amp; onboarding included</li>
+            <li>Email support</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Get Started</a>
+        </div>
+        <div class="tier popular">
+          <div class="badge">Most Popular</div>
+          <div class="tier-name">Growth</div>
+          <div class="tier-desc">Turn more leads into booked jobs</div>
+          <div class="price">$497<span class="permo">/mo</span></div>
+          <hr>
+          <ul>
+            <li>Everything in Starter, <b>unlimited</b> text-backs</li>
+            <li>AI Lead Qualification Chatbot (website + SMS)</li>
+            <li>Calendar &amp; booking sync</li>
+            <li>Monthly performance snapshot</li>
+            <li>Priority email &amp; chat support</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">Get Started</a>
+        </div>
+        <div class="tier">
+          <div class="tier-name">Pro</div>
+          <div class="tier-desc">The full done-for-you system</div>
+          <div class="price">$797<span class="permo">/mo</span></div>
+          <hr>
+          <ul>
+            <li>Everything in Growth, unlimited volume</li>
+            <li>Automated Appointment Reminders</li>
+            <li>Custom CRM / scheduling integration</li>
+            <li>Dedicated onboarding specialist</li>
+            <li>Monthly strategy call</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Get Started</a>
+        </div>
+      </div>
+      <div class="pricing-note">Pricing is per business location. Ask about multi-location discounts.</div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Questions</div>
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>How fast can I get set up?</h3>
+          <p>New accounts are onboarded through a short waitlist — getting your business number approved for messaging typically takes 10&ndash;14 days. You reserve your spot by paying for your first month upfront, but that month only starts counting once your line actually goes live, so you never pay for time spent waiting.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What if it doesn't work out for my business?</h3>
+          <p>You're covered by our 14-day guarantee: if GoSnagcall isn't a fit, you can get a full refund within 14 days of your go-live date &mdash; not from sign-up or payment.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is there a long-term contract?</h3>
+          <p>No. Every plan is month-to-month — cancel anytime, no cancellation fees.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I change plans later?</h3>
+          <p>Yes — you can upgrade or downgrade at any time as your business needs change.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What industries do you work with?</h3>
+          <p>GoSnagcall is built for home and professional service businesses — HVAC, plumbing, electrical, roofing, pest control, garage door repair, dental, veterinary, chiropractic, med spas, and similar trades.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section>
+    <div class="wrap">
+      <div class="cta-band" id="contact">
+        <h2>Ready to Stop Losing Jobs to Voicemail?</h2>
+        <p>Book a free setup call and we'll have GoSnagcall running on your business line within a week.</p>
+        <a class="btn btn-dark" style="background:#fff;color:var(--navy);" href="mailto:admin@gosnagcall.com">Book Your Free Setup Call</a>
+      </div>
+    </div>
+  </section>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="#top">GoSnag<span>call</span></a>
+        <p>Automated missed-call follow-up, lead qualification, and appointment reminders for home service businesses.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#services">Services</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:admin@gosnagcall.com">admin@gosnagcall.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 GoSnagcall. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // Simple mobile menu toggle
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.querySelector('.menu-btn');
+    var links = document.querySelector('.nav-links');
+    if (btn && links) {
+      btn.addEventListener('click', function () {
+        var open = links.style.display === 'flex';
+        links.style.display = open ? 'none' : 'flex';
+        links.style.cssText += open ? '' : 'position:absolute;top:64px;left:0;right:0;background:#fff;flex-direction:column;padding:16px 24px;border-bottom:1px solid #e1e9e6;gap:16px;';
+      });
+    }
+
+    // Pricing gate: unlock on email submit
+    var gateForm = document.getElementById('gateForm');
+    if (gateForm) {
+      gateForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var submitBtn = gateForm.querySelector('button');
+        var originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Unlocking…';
+
+        // TODO: replace YOUR_FORM_ID with your own Formspree form ID (formspree.io — free account,
+        // create a form, it gives you an ID, submissions land in your inbox).
+        fetch('https://formspree.io/f/YOUR_FORM_ID', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(gateForm)
+        }).catch(function () {
+          // Unlock anyway so a network hiccup never blocks a real lead — the email may not have been captured though.
+        }).finally(function () {
+          try { localStorage.setItem('gsc_unlocked', '1'); } catch (err) {}
+          document.documentElement.classList.remove('locked');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        });
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
