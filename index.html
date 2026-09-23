@@ -154,6 +154,8 @@
   .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:var(--maxw);margin:0 auto;}
   .logo{font-size:20px;font-weight:800;color:#000000;text-decoration:none;letter-spacing:-0.02em;}
   .logo span{color:#000000;}
+  .logo{display:inline-flex;align-items:center;gap:9px;}
+  .logo-mark{width:30px;height:30px;flex-shrink:0;}
   .nav-links{display:flex;align-items:center;gap:32px;}
   .nav-links a{font-size:14px;font-weight:600;color:var(--text-soft);text-decoration:none;}
   .nav-links a:hover{color:var(--navy);}
@@ -332,6 +334,20 @@
   .cta-band{background:var(--navy);border-radius:18px;padding:56px 40px;text-align:center;}
   .cta-band h2{color:#fff;}
   .cta-band p{color:#c3ccd3;font-size:15.5px;margin:14px 0 28px 0;}
+  .lead-form{max-width:520px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;}
+  .lead-form input{
+    padding:13px 14px;border:1px solid rgba(255,255,255,0.18);border-radius:8px;font-size:14px;font-family:inherit;
+    background:rgba(255,255,255,0.08);color:#fff;
+  }
+  .lead-form input::placeholder{color:#9fb0bd;}
+  .lead-form input:focus{outline:2px solid var(--teal-light);outline-offset:1px;}
+  .lead-form .full{grid-column:1 / -1;}
+  .lead-form button{border:none;cursor:pointer;font-family:inherit;background:#fff;color:var(--navy);}
+  .lead-fine{font-size:12px;color:#9fb0bd;margin-top:14px;}
+  .lead-done{display:none;color:#fff;font-size:16px;font-weight:600;padding:18px 0;}
+  .lead-form.sent{display:none;}
+  .lead-form.sent + .lead-done{display:block;}
+  @media (max-width:560px){ .lead-form{grid-template-columns:1fr;} }
 
   /* Footer */
   footer{
@@ -341,7 +357,7 @@
     -webkit-backdrop-filter:saturate(160%) blur(10px);
   }
   .footer-grid{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px;}
-  .footer-brand .logo{margin-bottom:8px;display:inline-block;}
+  .footer-brand .logo{margin-bottom:8px;display:inline-flex;}
   .footer-brand p{font-size:13px;color:var(--text-faint);max-width:280px;margin:0;}
   .footer-links{display:flex;gap:40px;flex-wrap:wrap;}
   .footer-col h4{font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-faint);margin:0 0 12px 0;}
@@ -413,16 +429,16 @@
 
 <header>
   <nav class="nav">
-    <a class="logo" href="#top">GoSnag<span>call</span></a>
+    <a class="logo" href="#top"><svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#d9622b"/><path d="M14.5 25.5c2.5 2 5 3 7.5 2.2 3-1 6.5-6 8-10" fill="none" stroke="#fff" stroke-width="5.8" stroke-linecap="round"/><circle cx="32.3" cy="15.4" r="4.4" fill="#efa43b"/></svg><span>GoSnagcall</span></a>
     <div class="nav-links">
       <a href="#how">How It Works</a>
       <a href="#services">Services</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a href="#contact" class="btn btn-primary mobile-only-cta">Book Your Free Setup Call</a>
+      <a href="#contact" class="btn btn-primary mobile-only-cta">Get Started</a>
     </div>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="#contact">Book Your Free Setup Call</a>
+      <a class="btn btn-primary" href="#contact">Get Started</a>
     </div>
     <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
@@ -451,7 +467,7 @@
         <p class="hero-slogan">No Missed Calls. <span>No Lost Customers.</span> No Lost Revenue.</p>
         <p class="lead">GoSnagcall instantly texts back every missed call, qualifies new leads around the clock, and reminds customers about their appointments — so you book more work without hiring anyone new.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#contact">Book Your Free Setup Call</a>
+          <a class="btn btn-primary" href="#contact">Get Started &mdash; No Call Needed</a>
           <a class="btn btn-ghost" href="#pricing">See Pricing</a>
         </div>
         <div class="hero-note">Limited onboarding spots &middot; First month is billed only once you're live</div>
@@ -461,7 +477,7 @@
           <div class="phone-screen">
             <div class="phone-bar">Missed Call &middot; 2:14 PM</div>
             <div class="bubble missed">📞 Missed call from (555) 013-8842</div>
-            <div class="bubble out">Hi! Sorry we missed your call — this is GoSnagcall Plumbing. What can we help you with today?<span class="time">Sent 8 sec later</span></div>
+            <div class="bubble out">Hi! Sorry we missed your call — this is Joe's Plumbing. What can we help you with today?<span class="time">Sent 8 sec later</span></div>
             <div class="bubble in">Hey, my water heater is leaking, need someone today if possible</div>
             <div class="bubble out">Got it — that's urgent, we can help. Is this for a home or business address, and are you free this afternoon?</div>
             <div class="bubble in">Home, and yes I'm free after 3pm</div>
@@ -699,8 +715,17 @@
     <div class="wrap">
       <div class="cta-band" id="contact">
         <h2>Ready to Stop Losing Jobs to Voicemail?</h2>
-        <p>Book a free setup call and we'll have GoSnagcall running on your business line within a week.</p>
-        <a class="btn btn-dark" style="background:#fff;color:var(--navy);" href="mailto:admin@gosnagcall.com">Book Your Free Setup Call</a>
+        <p>No sales calls, no scheduling. Leave your details and we'll text you to get started. Most businesses are live in 10&ndash;14 days.</p>
+        <form class="lead-form" id="leadForm">
+          <input type="text" name="name" required placeholder="Your name" autocomplete="name">
+          <input type="text" name="business" required placeholder="Business name" autocomplete="organization">
+          <input type="tel" name="phone" required placeholder="Mobile number" autocomplete="tel">
+          <input type="email" name="email" required placeholder="you@company.com" autocomplete="email">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+          <button type="submit" class="btn full">Text Me to Get Started</button>
+        </form>
+        <div class="lead-done" role="status">Thanks! We'll text you shortly to get you set up.</div>
+        <div class="lead-fine">Prefer email? Write to <a href="mailto:admin@gosnagcall.com" style="color:#fff;">admin@gosnagcall.com</a></div>
       </div>
     </div>
   </section>
@@ -714,7 +739,7 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="logo" href="#top">GoSnag<span>call</span></a>
+        <a class="logo" href="#top"><svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#d9622b"/><path d="M14.5 25.5c2.5 2 5 3 7.5 2.2 3-1 6.5-6 8-10" fill="none" stroke="#fff" stroke-width="5.8" stroke-linecap="round"/><circle cx="32.3" cy="15.4" r="4.4" fill="#efa43b"/></svg><span>GoSnagcall</span></a>
         <p>Automated missed-call follow-up, lead qualification, and appointment reminders for home service businesses.</p>
       </div>
       <div class="footer-links">
@@ -848,6 +873,28 @@
           submitBtn.disabled = false;
           submitBtn.textContent = originalText;
         });
+      });
+    }
+
+    // Get-started form: sends name/business/phone/email to n8n webhook (workflow "GoSnagcall – Get started").
+    var leadForm = document.getElementById('leadForm');
+    if (leadForm) {
+      leadForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = leadForm.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        var data = new URLSearchParams(new FormData(leadForm));
+        data.append('page', window.location.href);
+        data.append('referrer', document.referrer || '');
+        fetch('https://n8n.gosnagcall.com/webhook/get-started', { method: 'POST', body: data })
+          .then(function (r) { if (!r.ok) throw new Error('bad status'); leadForm.classList.add('sent'); })
+          .catch(function () {
+            btn.disabled = false;
+            btn.textContent = 'Text Me to Get Started';
+            var fine = document.querySelector('.lead-fine');
+            if (fine) fine.innerHTML = 'Something went wrong &mdash; please email us at <a href="mailto:admin@gosnagcall.com" style="color:#fff;">admin@gosnagcall.com</a>';
+          });
       });
     }
   });
