@@ -593,7 +593,7 @@
         <p>Enter your email to unlock pricing, FAQ, and next steps.</p>
         <form id="gateForm">
           <input type="email" name="email" required placeholder="you@company.com" autocomplete="email">
-          <input type="hidden" name="_subject" value="New GoSnagcall pricing unlock">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
           <button type="submit" class="btn btn-primary">Unlock Pricing</button>
         </form>
         <div class="gate-fine">We'll only use this to follow up about GoSnagcall. No spam.</div>
@@ -832,12 +832,14 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Unlocking…';
 
-        // TODO: replace YOUR_FORM_ID with your own Formspree form ID (formspree.io — free account,
-        // create a form, it gives you an ID, submissions land in your inbox).
-        fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        // Lead capture: self-hosted n8n webhook (workflow "GoSnagcall – Pricing unlock").
+        // URL-encoded body = "simple" CORS request, no preflight needed.
+        var data = new URLSearchParams(new FormData(gateForm));
+        data.append('page', window.location.href);
+        data.append('referrer', document.referrer || '');
+        fetch('https://n8n.gosnagcall.com/webhook/pricing-unlock', {
           method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: new FormData(gateForm)
+          body: data
         }).catch(function () {
           // Unlock anyway so a network hiccup never blocks a real lead — the email may not have been captured though.
         }).finally(function () {
