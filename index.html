@@ -313,6 +313,21 @@
     content:"\2713";position:absolute;left:0;color:var(--teal);font-weight:700;
   }
   .tier .btn{display:block;text-align:center;}
+  /* Billing toggle */
+  .billing-toggle{display:flex;width:max-content;max-width:100%;align-items:center;justify-content:center;gap:12px;margin:0 auto 26px;padding:9px 18px;border-radius:30px;background:rgba(255,255,255,0.85);border:1px solid var(--border);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:14px;font-weight:700;color:var(--text-soft);}
+  .billing-toggle .bt-label{cursor:pointer;transition:color .15s;}
+  .billing-toggle .bt-label.active{color:var(--navy);}
+  .switch{position:relative;width:52px;height:28px;border-radius:14px;border:none;background:#c9d4d1;cursor:pointer;padding:0;transition:background .2s;flex-shrink:0;}
+  .switch .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s;}
+  .switch[aria-checked="true"]{background:var(--teal);}
+  .switch[aria-checked="true"] .knob{transform:translateX(24px);}
+  .switch:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .save-pill{display:inline-block;background:var(--orange);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:10px;margin-left:4px;vertical-align:1px;}
+  .billed{font-size:12.5px;color:var(--text-soft);margin-top:2px;min-height:19px;}
+  .billed b{color:var(--orange);}
+  #pricing .y{display:none;}
+  #pricing.yearly .y{display:inline;}
+  #pricing.yearly .m{display:none;}
   .pricing-note{text-align:center;color:var(--text-faint);font-size:12.5px;margin-top:28px;}
   .guarantee-banner{
     text-align:center;max-width:640px;margin:0 auto 36px auto;
@@ -367,6 +382,30 @@
 
   section.alt{background:rgba(244,248,247,0.5);}
   section.tight{padding:64px 0;}
+
+  /* Cost-of-waiting calculator */
+  .calc{max-width:880px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:0;border-radius:18px;overflow:hidden;box-shadow:0 24px 50px -24px rgba(15,36,56,0.35);}
+  .calc-in{background:#fff;padding:30px 30px 26px;}
+  .calc-out{background:var(--navy);color:#fff;padding:30px;display:flex;flex-direction:column;justify-content:center;}
+  .calc-row{margin-bottom:22px;}
+  .calc-row:last-child{margin-bottom:0;}
+  .calc-lbl{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:8px;gap:10px;}
+  .calc-lbl output{font-size:18px;font-weight:800;color:var(--orange);white-space:nowrap;}
+  .calc input[type=range]{width:100%;accent-color:var(--orange);height:22px;margin:0;}
+  .calc-hint{font-size:12px;color:var(--text-faint);margin-top:3px;}
+  .calc-out .k{font-size:13px;color:#c3ccd3;font-weight:600;}
+  .calc-out .big{font-size:42px;font-weight:800;color:#fff;line-height:1.1;margin:4px 0 2px;letter-spacing:-0.02em;}
+  .calc-out .big span{font-size:16px;font-weight:600;color:#c3ccd3;}
+  .calc-out .sub{font-size:14px;color:#c3ccd3;margin-bottom:18px;}
+  .calc-out .sub b{color:#fff;}
+  .calc-out .payback{font-size:13.5px;color:var(--teal-light);font-weight:600;border-top:1px solid rgba(255,255,255,0.14);padding-top:14px;}
+  .rec{font-size:13.5px;color:#fff;margin-top:12px;line-height:1.45;}
+  .rec b{color:var(--amber);}
+  .rec a{color:var(--teal-light);font-weight:700;}
+  .golive{margin-top:16px;background:rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;font-size:13.5px;color:#fff;line-height:1.45;}
+  .golive b{color:var(--amber);}
+  .calc-note{text-align:center;font-size:12px;color:var(--text-faint);margin-top:14px;}
+  @media (max-width:760px){ .calc{grid-template-columns:1fr;} .calc-in,.calc-out{padding:24px 20px;} .calc-out .big{font-size:36px;} }
 
   /* Pricing gate */
   #gated-content{position:relative;}
@@ -601,6 +640,44 @@
     </div>
   </section>
 
+  <!-- COST OF WAITING -->
+  <section id="calculator">
+    <div class="wrap">
+      <div class="section-head frost">
+        <div class="eyebrow">What Missed Calls Cost You</div>
+        <h2>How much is voicemail costing you?</h2>
+        <p class="section-sub">Move the sliders to match your business. Most owners are surprised by the number.</p>
+      </div>
+      <div class="calc">
+        <div class="calc-in">
+          <div class="calc-row">
+            <div class="calc-lbl"><label for="cMissed">Missed calls per week</label><output id="oMissed">5</output></div>
+            <input type="range" id="cMissed" min="1" max="40" step="1" value="5">
+            <div class="calc-hint">After hours, on a job, on another line</div>
+          </div>
+          <div class="calc-row">
+            <div class="calc-lbl"><label for="cJob">Average job value</label><output id="oJob">$350</output></div>
+            <input type="range" id="cJob" min="100" max="5000" step="50" value="350">
+          </div>
+          <div class="calc-row">
+            <div class="calc-lbl"><label for="cBook">Missed callers who would have booked</label><output id="oBook">30%</output></div>
+            <input type="range" id="cBook" min="10" max="80" step="5" value="30">
+            <div class="calc-hint">Many callers simply dial the next company instead</div>
+          </div>
+        </div>
+        <div class="calc-out" aria-live="polite">
+          <div class="k">You could be losing about</div>
+          <div class="big" id="rWeek">$525<span> / week</span></div>
+          <div class="sub">That's roughly <b id="rMonth">$2,275</b> a month in jobs going to competitors.</div>
+          <div class="payback" id="rPayback">Starter pays for itself with just 1 saved job a month.</div>
+          <div class="rec" id="rRec"></div>
+          <div class="golive">Registration takes 10&ndash;14 days. <b>Start today and you could be live by <span class="golive-date">early next month</span></b> &mdash; every week you wait costs you about <span id="rWait">$525</span>.</div>
+        </div>
+      </div>
+      <div class="calc-note">Estimate only, based on the numbers you enter. Your results will vary.</div>
+    </div>
+  </section>
+
   <div id="gated-content">
     <div class="gate-overlay" id="gateOverlay">
       <div class="gate-card">
@@ -623,20 +700,26 @@
       <div class="section-head frost">
         <div class="eyebrow">Simple Pricing</div>
         <h2>Choose Your Plan</h2>
-        <p class="section-sub">Simple monthly pricing. No long-term contract — cancel anytime.</p>
+        <p class="section-sub">Pay monthly or save with yearly billing. No long-term contract required.</p>
       </div>
       <div class="guarantee-banner frost">
         <span class="guarantee-badge">14-Day Guarantee</span>
-        Your first month is only billed once your line actually goes live — and if GoSnagcall isn't a fit, you get a full refund within 14 days of your go-live date.
+        Your plan only starts counting once your line actually goes live — and if GoSnagcall isn't a fit, you get a full refund within 14 days of your go-live date. Monthly or yearly.
+      </div>
+      <div class="billing-toggle">
+        <span class="bt-label active" data-billing="monthly">Monthly</span>
+        <button type="button" class="switch" id="billingSwitch" role="switch" aria-checked="false" aria-label="Pay yearly and get 2 months free"><span class="knob"></span></button>
+        <span class="bt-label" data-billing="yearly">Yearly <span class="save-pill">2 months free</span></span>
       </div>
       <div class="pricing-grid">
         <div class="tier">
           <div class="tier-name">Starter</div>
           <div class="tier-desc">Stop losing leads to voicemail</div>
-          <div class="price">$297<span class="permo">/mo</span></div>
+          <div class="price"><span class="m">$297</span><span class="y">$248</span><span class="permo">/mo</span></div>
+          <div class="billed"><span class="m">Billed monthly</span><span class="y">$2,970 billed yearly &middot; <b>save $594</b></span></div>
           <hr>
           <ul>
-            <li>Missed-Call Text-Back (up to 75 missed calls/mo)</li>
+            <li>Missed-Call Text-Back (up to 30 missed calls/mo)</li>
             <li>24/7 automatic coverage</li>
             <li>Custom text message templates</li>
             <li>Setup &amp; onboarding included</li>
@@ -648,7 +731,8 @@
           <div class="badge">Most Popular</div>
           <div class="tier-name">Growth</div>
           <div class="tier-desc">Turn more leads into booked jobs</div>
-          <div class="price">$497<span class="permo">/mo</span></div>
+          <div class="price"><span class="m">$497</span><span class="y">$414</span><span class="permo">/mo</span></div>
+          <div class="billed"><span class="m">Billed monthly</span><span class="y">$4,970 billed yearly &middot; <b>save $994</b></span></div>
           <hr>
           <ul>
             <li>Everything in Starter, <b>unlimited</b> text-backs</li>
@@ -662,7 +746,8 @@
         <div class="tier">
           <div class="tier-name">Pro</div>
           <div class="tier-desc">The full done-for-you system</div>
-          <div class="price">$797<span class="permo">/mo</span></div>
+          <div class="price"><span class="m">$797</span><span class="y">$664</span><span class="permo">/mo</span></div>
+          <div class="billed"><span class="m">Billed monthly</span><span class="y">$7,970 billed yearly &middot; <b>save $1,594</b></span></div>
           <hr>
           <ul>
             <li>Everything in Growth, unlimited volume</li>
@@ -699,6 +784,14 @@
           <p>No. Every plan is month-to-month — cancel anytime, no cancellation fees.</p>
         </div>
         <div class="faq-item">
+          <h3>Do you offer yearly billing?</h3>
+          <p>Yes &mdash; pay yearly and get 2 months free. You can start monthly and switch to yearly at any time. The 14-day money-back guarantee from your go-live date applies to yearly plans too.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What happens if I go over 30 missed calls on Starter?</h3>
+          <p>We'll give you a heads-up by text and email when you reach 80% of your monthly limit. Once you hit 30, new missed calls won't get a text-back until your next month starts &mdash; or you can upgrade to Growth anytime for unlimited text-backs.</p>
+        </div>
+        <div class="faq-item">
           <h3>Can I change plans later?</h3>
           <p>Yes — you can upgrade or downgrade at any time as your business needs change.</p>
         </div>
@@ -715,7 +808,7 @@
     <div class="wrap">
       <div class="cta-band" id="contact">
         <h2>Ready to Stop Losing Jobs to Voicemail?</h2>
-        <p>No sales calls, no scheduling. Leave your details and we'll text you to get started. Most businesses are live in 10&ndash;14 days.</p>
+        <p>No sales calls, no scheduling. Leave your details and we'll text you to get started. Most businesses are live in 10&ndash;14 days &mdash; start today and you could be live by <span class="golive-date">early next month</span>.</p>
         <form class="lead-form" id="leadForm">
           <input type="text" name="name" required placeholder="Your name" autocomplete="name">
           <input type="text" name="business" required placeholder="Business name" autocomplete="organization">
@@ -874,6 +967,60 @@
           submitBtn.textContent = originalText;
         });
       });
+    }
+
+    // Go-live date: today + 14 days (upper end of carrier approval), shown wherever .golive-date appears.
+    try {
+      var d = new Date(); d.setDate(d.getDate() + 14);
+      var txt = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+      document.querySelectorAll('.golive-date').forEach(function (el) { el.textContent = txt; });
+    } catch (e) {}
+
+    // Cost-of-waiting calculator.
+    var cM = document.getElementById('cMissed'), cJ = document.getElementById('cJob'), cB = document.getElementById('cBook');
+    function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+    function calc() {
+      if (!cM) return;
+      var missed = +cM.value, job = +cJ.value, book = +cB.value / 100;
+      var week = missed * job * book, month = week * 52 / 12;
+      document.getElementById('oMissed').textContent = missed;
+      document.getElementById('oJob').textContent = money(job);
+      document.getElementById('oBook').textContent = Math.round(book * 100) + '%';
+      document.getElementById('rWeek').innerHTML = money(week) + '<span> / week</span>';
+      document.getElementById('rMonth').textContent = money(month);
+      document.getElementById('rWait').textContent = money(week);
+      var perMonth = Math.round(missed * 52 / 12);
+      var growth = perMonth > 30;
+      var price = growth ? 497 : 297, plan = growth ? 'Growth' : 'Starter';
+      var jobs = Math.max(1, Math.ceil(price / job));
+      document.getElementById('rPayback').textContent = plan + ' ($' + price + '/mo) pays for itself with just ' + jobs + ' saved job' + (jobs > 1 ? 's' : '') + ' a month.';
+      document.getElementById('rRec').innerHTML = growth
+        ? 'At about <b>' + perMonth + ' missed calls a month</b>, you\'d outgrow Starter (30/mo). <b>Growth</b> covers unlimited calls and adds AI lead qualification. <a href="#pricing">See plans</a>'
+        : 'Starter covers up to 30 missed calls a month. <b>Growth</b> adds AI lead qualification to turn more of them into booked jobs. <a href="#pricing">See plans</a>';
+    }
+    [cM, cJ, cB].forEach(function (el) { if (el) el.addEventListener('input', calc); });
+    calc();
+
+    // Billing toggle (monthly / yearly). Buttons with data-href-m / data-href-y swap their checkout link.
+    var sw = document.getElementById('billingSwitch');
+    var pricing = document.getElementById('pricing');
+    function setBilling(yearly) {
+      if (!sw || !pricing) return;
+      sw.setAttribute('aria-checked', yearly ? 'true' : 'false');
+      pricing.classList.toggle('yearly', yearly);
+      document.querySelectorAll('.bt-label').forEach(function (l) {
+        l.classList.toggle('active', (l.getAttribute('data-billing') === 'yearly') === yearly);
+      });
+      document.querySelectorAll('#pricing [data-href-m]').forEach(function (a) {
+        a.setAttribute('href', a.getAttribute(yearly ? 'data-href-y' : 'data-href-m'));
+      });
+    }
+    if (sw) {
+      sw.addEventListener('click', function () { setBilling(sw.getAttribute('aria-checked') !== 'true'); });
+      document.querySelectorAll('.bt-label').forEach(function (l) {
+        l.addEventListener('click', function () { setBilling(l.getAttribute('data-billing') === 'yearly'); });
+      });
+      if (new URLSearchParams(location.search).get('billing') === 'yearly') setBilling(true);
     }
 
     // Get-started form: sends name/business/phone/email to n8n webhook (workflow "GoSnagcall – Get started").
