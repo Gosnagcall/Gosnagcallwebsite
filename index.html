@@ -488,6 +488,8 @@
   .lead-form .field::placeholder{color:var(--on-dark-40);}
   .lead-form .btn{grid-column:1 / -1;padding-block:16px;font-size:16px;}
   .lead-done{display:none;color:var(--on-dark);font-size:17px;font-weight:700;padding:24px 0;}
+  .demo-next{margin:24px auto 0;max-width:560px;padding:22px 24px;border-radius:14px;border:1px solid var(--line-dark);background:rgba(255,255,255,0.04);}
+  .demo-next p{font-size:15.5px;font-weight:500;color:var(--on-dark-80);margin-bottom:16px;}
   .lead-form.sent{display:none;}
   .lead-form.sent + .lead-done{display:block;}
   .lead-fine{font-size:13.5px;color:var(--on-dark-60);margin-top:16px;}
@@ -992,7 +994,13 @@
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
         <button type="submit" class="btn btn-primary">Text Me to Get Started</button>
       </form>
-      <div class="lead-done" role="status">Thanks! We'll text you shortly to get you set up.</div>
+      <div class="lead-done" role="status">
+        <p>Thanks! We'll text you shortly to get you set up.</p>
+        <div class="demo-next">
+          <p>While you wait, see what your customers would get. Try our live demo chat, set up for a heating &amp; AC company.</p>
+          <a class="btn btn-primary" href="/hvac/">Try the Live Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
       <div class="lead-fine"><span>Prefer email? Write to</span> <a href="mailto:admin@gosnagcall.com">admin@gosnagcall.com</a></div>
     </div>
   </section>
