@@ -1259,5 +1259,47 @@
   calc(); renderSnap();
 })();
 </script>
+<!-- GoSnagcall chat bubble (2026-11-09): our own lead qualification chat, Typebot bot "gosnagcall" -->
+<style>
+  .gs-chat-btn{position:fixed;right:20px;bottom:20px;z-index:70;display:flex;align-items:center;gap:10px;
+    padding:14px 18px;border:0;border-radius:999px;background:var(--orange);color:#fff;font-family:var(--font);
+    font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(4,26,27,.28);}
+  .gs-chat-btn:hover{background:var(--orange-ink);}
+  .gs-chat-btn svg{width:22px;height:22px;flex:none;}
+  .gs-chat-panel{position:fixed;right:20px;bottom:88px;z-index:70;width:380px;height:600px;max-height:calc(100vh - 120px);
+    border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 16px 48px rgba(4,26,27,.35);display:none;flex-direction:column;}
+  .gs-chat-panel.open{display:flex;}
+  .gs-chat-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--deep-900);color:#fff;font-family:var(--font);font-weight:700;font-size:15px;}
+  .gs-chat-head small{display:block;font-weight:500;font-size:12px;opacity:.7;}
+  .gs-chat-close{border:0;background:transparent;color:#fff;font-size:24px;line-height:1;cursor:pointer;padding:4px 8px;}
+  .gs-chat-panel iframe{flex:1;width:100%;border:0;background:#f7f7f7;}
+  @media (max-width:560px){
+    .gs-chat-panel{right:0;bottom:0;width:100%;height:100%;max-height:none;border-radius:0;}
+    .gs-chat-panel.open ~ .gs-chat-btn{display:none;}
+    .gs-chat-btn .gs-chat-label{display:none;}
+    .gs-chat-btn{padding:14px;}
+  }
+</style>
+<div class="gs-chat-panel" id="gs-chat-panel" role="dialog" aria-label="Chat with GoSnagcall">
+  <div class="gs-chat-head"><div>Chat with GoSnagcall<small>The same chat we set up for your website</small></div>
+    <button class="gs-chat-close" type="button" aria-label="Close chat" onclick="gsChat(false)">&times;</button></div>
+</div>
+<button class="gs-chat-btn" id="gs-chat-btn" type="button" aria-controls="gs-chat-panel" aria-expanded="false" onclick="gsChat()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span class="gs-chat-label">Chat with us</span>
+</button>
+<script>
+  function gsChat(open){
+    var panel=document.getElementById('gs-chat-panel'), btn=document.getElementById('gs-chat-btn');
+    var show = (open === undefined) ? !panel.classList.contains('open') : open;
+    if (show && !panel.querySelector('iframe')) {   // chat sa načíta až po kliknutí – web ostáva rýchly
+      var f=document.createElement('iframe');
+      f.src='https://bot.gosnagcall.com/gosnagcall'; f.title='GoSnagcall website chat'; f.allow='clipboard-write';
+      panel.appendChild(f);
+    }
+    panel.classList.toggle('open', show);
+    btn.setAttribute('aria-expanded', show ? 'true' : 'false');
+  }
+</script>
 </body>
 </html>
